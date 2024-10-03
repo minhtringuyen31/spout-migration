@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { validateTeamName } from "../../../utils/validators";
 
 interface AddTeamModalProps {
   isOpen: boolean;
@@ -18,22 +19,8 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
   }>({ isValid: true, errorMessage: "" });
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  const validateName = (name: string) => {
-    const trimmedName = name.trim();
-    if (!trimmedName) {
-      return { isValid: false, errorMessage: "Team name is required." };
-    }
-    if (trimmedName.length > 100) {
-      return {
-        isValid: false,
-        errorMessage: "Name must be 100 characters or less.",
-      };
-    }
-    return { isValid: true, errorMessage: "" };
-  };
-
   const handleAddTeam = async () => {
-    const validationResult = validateName(name);
+    const validationResult = validateTeamName(name);
     setValidation(validationResult);
 
     if (!validationResult.isValid) return;
@@ -45,7 +32,7 @@ const AddTeamModal: React.FC<AddTeamModalProps> = ({
     const newName = e.target.value;
     setName(newName);
 
-    const validationResult = validateName(newName);
+    const validationResult = validateTeamName(newName);
     setValidation(validationResult);
   };
 
